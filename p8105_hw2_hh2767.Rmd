@@ -9,6 +9,7 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(readxl)
+library(p8105.datasets)
 ```
 ```{r}
 nyc_transit = read_csv(file = ".\\data\\NYC_Transit_Subway_Entrance_And_Exit_Data.csv") %>% 
@@ -69,5 +70,29 @@ pptn = filter(pptn, pptn$precipitation_in != "Month")
 pptn$precipitation_in = as.integer(pptn$precipitation_in)
 pptn_precipitation_in = tibble(pptn$precipitation_in)
 pptn$precipitation_in = apply(pptn_precipitation_in, 2, function(x) month.name[x])
+```
+
+#Problem 3
+Use the following code chunk to clean the data for problem 3.
+
+```{r}
+brfss_smart2010 = janitor::clean_names(brfss_smart2010)
+colnames(brfss_smart2010)[2] = "location_abbr"
+colnames(brfss_smart2010)[3] = "location_desc"
+
+brfss_smart2010 = filter(brfss_smart2010, topic == "Overall Health") %>% 
+  select(-class, -topic, -question, -sample_size, -(confidence_limit_low:geo_location)) %>% 
+  spread(key = response, value = data_value) %>% 
+  janitor::clean_names() %>% 
+  select(year, location_abbr, location_desc, poor, fair, good, very_good, excellent) %>% 
+  mutate(above_good = very_good + excellent) 
+brfss_smart2010$poor = lapply(brfss_smart2010$poor, function(x) x/100)
+brfss_smart2010$fair = lapply(brfss_smart2010$fair, function(x) x/100)
+brfss_smart2010$good = lapply(brfss_smart2010$good, function(x) x/100)
+brfss_smart2010$very_good = lapply(brfss_smart2010$very_good, function(x) x/100)
+brfss_smart2010$excellent = lapply(brfss_smart2010$excellent, function(x) x/100)
+brfss_smart2010$above_good = lapply(brfss_smart2010$above_good, function(x) x/100)
+
+#distinct locations
 ```
 
