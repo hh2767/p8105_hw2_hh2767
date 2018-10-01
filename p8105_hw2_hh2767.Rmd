@@ -1,0 +1,41 @@
+---
+title: "p8105_hw2_hh2767.Rmd"
+author: "Haoran Hu"
+date: "2018-09-30"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+```{r}
+nyc_transit = read_csv(file = ".\\data\\NYC_Transit_Subway_Entrance_And_Exit_Data.csv") %>% 
+  janitor::clean_names() %>% 
+  select(line, station_name, station_latitude, station_longitude, route1:route11, entry, vending, entrance_type, ada) %>% 
+mutate(entry = ifelse(entry == "NO", FALSE, TRUE))
+```
+This dataset contains variables that describe NYC transits. The variables are:lines, station names, station locations, the routes that the station serves, entry type, vendings, ADA compliances and so on. So far, I have selected the variables that we need, cleaned the variable names, and turned entry variable from character variable into logical variable. The dimension of the data set is `r nrow(nyc_transit)`* `r ncol(nyc_transit)`. These data are tidy.
+
+```{r}
+distinct_stations = distinct(nyc_transit, station_name, route1, route2, route3, route4, route5, route6, route7, route8, route9, route10, route11, .keep_all = TRUE) 
+```
+There are `r nrow(distinct_stations)` distinct stations. `r sum(distinct_stations$ada)` of the stations are ada compliant. 
+
+```{r}
+etr_novending = filter(nyc_transit, vending == "NO")
+no_vend_allow_etr = sum(etr_novending$entry)
+num_etr_novending = nrow(etr_novending)
+```
+The proportion of station entrances / exits without vending that allow entrance is `r round(no_vend_allow_etr/num_etr_novending, 3)`.
+
+In the following part, I will reformat data so that route number and route name are distinct variables, and the data will become clean data.
+```{r}
+tidy_nyc_transit = gather(nyc_transit, key = route_num, value = route_name, route1:route11) %>% 
+  filter(!is.na(route_name)) %>% 
+  distinct()
+
+station_serve_A = distinct(tidy_nyc_transit,  station_name, .keep_all = TRUE) %>% 
+  filter(route_name == "A")
+```
+The number of distinct station that serve the A train is `r nrow(station_serve_A)`, and among those stations, `r round(sum(station_serve_A$ada)/nrow(station_serve_A),3)`
