@@ -56,9 +56,12 @@ Then, we know that the number of distinct station that serve the A train is `r n
 
 #Problem 2
 ```{r}
-wheel_trash = readxl::read_excel(".\\data\\HealthyHarborWaterWheelTotals2017-9-26.xlsx", range = "A2:N258") %>% 
+wheel_trash = readxl::read_excel(".\\data\\HealthyHarborWaterWheelTotals2018-7-28.xlsx", range = "A2:N338") %>% 
   janitor::clean_names() %>% 
   filter(!is.na(dumpster))
+
+head(wheel_trash, 5)
+
 wheel_trash$sports_balls = round(wheel_trash$sports_balls)
 wheel_trash$sports_balls = as.integer(wheel_trash$sports_balls)
 ```
