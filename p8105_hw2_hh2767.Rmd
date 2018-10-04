@@ -150,6 +150,7 @@ ggplot(brfss_smart_only2002, aes(x = excellent)) +
 ylab("ABNAS language") + ggtitle("histogram of Excellent") + theme(plot.title = element_text(hjust = 0.5)) +  theme_bw() 
 ```
 
+The following chunk creates a scatterplot showing the proportion of “Excellent” response values in New York County and Queens County in each year from 2002 to 2010.
 
 ```{r}
 brfss_NY_Q_county = filter(brfss_smart2010, location_desc == "NY - New York County" | location_desc == "NY - Queens County")
