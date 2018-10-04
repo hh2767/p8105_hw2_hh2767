@@ -147,8 +147,7 @@ The following chunk creates a histogram of “Excellent” response values in th
 ```{r}
 ggplot(brfss_smart_only2002, aes(x = excellent)) + 
   geom_histogram(alpha = .4, binwidth = .5, color = "blue") + xlab("Percentage of Excellent") +
-ylab("ABNAS language") + ggtitle("histogram of Excellent") + theme(plot.title = element_text(hjust = 0.5)) +  theme_bw() + 
-  theme(legend.position = "bottom")
+ylab("ABNAS language") + ggtitle("histogram of Excellent") + theme(plot.title = element_text(hjust = 0.5)) +  theme_bw() 
 ```
 
 
