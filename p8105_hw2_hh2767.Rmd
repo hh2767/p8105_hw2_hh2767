@@ -11,16 +11,20 @@ library(tidyverse)
 library(readxl)
 library(p8105.datasets)
 ```
+
+#Problem 1
+
 ```{r}
 nyc_transit = read_csv(file = ".\\data\\NYC_Transit_Subway_Entrance_And_Exit_Data.csv") %>% 
   janitor::clean_names() %>% 
   select(line, station_name, station_latitude, station_longitude, route1:route11, entry, vending, entrance_type, ada) %>% 
 mutate(entry = ifelse(entry == "NO", FALSE, TRUE))
 ```
-This dataset contains variables that describe NYC transits. The variables are:lines, station names, station locations, the routes that the station serves, entry type, vendings, ADA compliances and so on. So far, I have selected the variables that we need, cleaned the variable names, and turned entry variable from character variable into logical variable. The dimension of the data set is `r nrow(nyc_transit)`* `r ncol(nyc_transit)`. These data are tidy.
+This dataset contains variables that describe NYC transits. The variables are:lines, station names, station locations, the routes that the station serves, entry type, vendings, ADA compliances and so on. So far, I have selected the variables that we need, cleaned the variable names, and turned entry variable from character variable into logical variable. The dimension of the data set is `r nrow(nyc_transit)`(rows)* `r ncol(nyc_transit)`(columns). These data are not tidy.
 
 ```{r}
-distinct_stations = distinct(nyc_transit, station_name, route1, route2, route3, route4, route5, route6, route7, route8, route9, route10, route11, .keep_all = TRUE) 
+
+distinct_stations = distinct(nyc_transit, station_name, line, .keep_all = TRUE) 
 ```
 There are `r nrow(distinct_stations)` distinct stations. `r sum(distinct_stations$ada)` of the stations are ada compliant. 
 
@@ -37,10 +41,10 @@ tidy_nyc_transit = gather(nyc_transit, key = route_num, value = route_name, rout
   filter(!is.na(route_name)) %>% 
   distinct()
 
-station_serve_A = distinct(tidy_nyc_transit,  station_name, .keep_all = TRUE) %>% 
+station_serve_A = distinct(tidy_nyc_transit, line, station_name, .keep_all = TRUE) %>% 
   filter(route_name == "A")
 ```
-The number of distinct station that serve the A train is `r nrow(station_serve_A)`, and among those stations, `r round(sum(station_serve_A$ada)/nrow(station_serve_A),3)`
+The number of distinct station that serve the A train is `r nrow(station_serve_A)`, and among those stations, `r sum(station_serve_A$ada)`
 
 #Problem 2
 ```{r}
@@ -86,13 +90,43 @@ brfss_smart2010 = filter(brfss_smart2010, topic == "Overall Health") %>%
   janitor::clean_names() %>% 
   select(year, location_abbr, location_desc, poor, fair, good, very_good, excellent) %>% 
   mutate(above_good = very_good + excellent) 
-brfss_smart2010$poor = lapply(brfss_smart2010$poor, function(x) x/100)
-brfss_smart2010$fair = lapply(brfss_smart2010$fair, function(x) x/100)
-brfss_smart2010$good = lapply(brfss_smart2010$good, function(x) x/100)
-brfss_smart2010$very_good = lapply(brfss_smart2010$very_good, function(x) x/100)
-brfss_smart2010$excellent = lapply(brfss_smart2010$excellent, function(x) x/100)
-brfss_smart2010$above_good = lapply(brfss_smart2010$above_good, function(x) x/100)
+
+#if need to change the percentage to decimal
+# brfss_smart2010$poor = lapply(brfss_smart2010$poor, function(x) x/100)
+# brfss_smart2010$fair = lapply(brfss_smart2010$fair, function(x) x/100)
+# brfss_smart2010$good = lapply(brfss_smart2010$good, function(x) x/100)
+# brfss_smart2010$very_good = lapply(brfss_smart2010$very_good, function(x) x/100)
+# brfss_smart2010$excellent = lapply(brfss_smart2010$excellent, function(x) x/100)
+# brfss_smart2010$above_good = lapply(brfss_smart2010$above_good, function(x) x/100)
 
 #distinct locations
+nrow(distinct(brfss_smart2010, location_desc))
+#different states
+nrow(distinct(brfss_smart2010, location_abbr))
+#in total 51 states are represented. Since there are only 50 states and 1 special administrative region in the US, we know that every state is represented.
+
+#to see what state is observed the most
+state_count = count(brfss_smart2010, location_abbr) %>% 
+  arrange(n)
 ```
+
+```{r}
+#to figure out the median of the “Excellent” response value in 2002
+brfss_smart_only2002 = filter(brfss_smart2010, year == 2002)
+median_excellent_2002 = median(brfss_smart_only2002$excellent, na.omit(TRUE))
+```
+
+```{r}
+ggplot(brfss_smart_only2002, aes(x = excellent)) + 
+  geom_histogram(alpha = .4, binwidth = .5, color = "blue") + xlab("Percentage of Excellent") +
+ylab("ABNAS language") + ggtitle("histogram of Excellent") + theme(plot.title = element_text(hjust = 0.5))
+```
+
+```{r}
+brfss_NY_Q_county = filter(brfss_smart2010, location_desc == "NY - New York County" | location_desc == "NY - Queens County")
+ggplot(brfss_NY_Q_county, aes(x = year, y = excellent)) + 
+  geom_point(aes(color = location_desc)) + ylab("Percentage of Excellent")
+```
+
+
 
