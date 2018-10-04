@@ -95,7 +95,8 @@ colnames(brfss_smart2010)[2] = "location_abbr"
 colnames(brfss_smart2010)[3] = "location_desc"
 ```
 
-
+Next, in the following code chunk, I will finish the following steps:
+Select the data whose topic is "Overall health". Exclude variables for class, topic, question, sample size, and everything from lower confidence limit to GeoLocation. Structure data so that values for Response (“Excellent” to “Poor”) are column names / variables which indicate the proportion of subjects with each response. Create a variable called "above_good" that shows the proportion of responses that were “Excellent” or “Very Good”.
 
 ```{r}
 brfss_smart2010 = filter(brfss_smart2010, topic == "Overall Health") %>% 
