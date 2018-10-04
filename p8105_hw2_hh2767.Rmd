@@ -32,8 +32,8 @@ The code chunk above creates a data frame that contains distince stations. There
 
 ```{r}
 etr_novending = filter(nyc_transit, vending == "NO")
-no_vend_allow_etr = sum(etr_novending$entry)
-num_etr_novending = nrow(etr_novending)
+no_vend_allow_etr = sum(etr_novending$entry) #number of no vending entrance that allow entry
+num_etr_novending = nrow(etr_novending) #number of entrance that are without vending.
 ```
 The proportion of station entrances/exits without vending that allow entrance is `r round(no_vend_allow_etr/num_etr_novending, 3)`.
 
@@ -85,13 +85,19 @@ pptn$precipitation_in = apply(pptn_precipitation_in, 2, function(x) month.name[x
 ```
 
 #Problem 3
-Use the following code chunk to clean the data for problem 3.
+
+First, I will tidy the data for problem 3.
+In the following code chunk, I will clean the names of the variables.
 
 ```{r}
 brfss_smart2010 = janitor::clean_names(brfss_smart2010)
 colnames(brfss_smart2010)[2] = "location_abbr"
 colnames(brfss_smart2010)[3] = "location_desc"
+```
 
+
+
+```{r}
 brfss_smart2010 = filter(brfss_smart2010, topic == "Overall Health") %>% 
   select(-class, -topic, -question, -sample_size, -(confidence_limit_low:geo_location)) %>% 
   spread(key = response, value = data_value) %>% 
@@ -117,6 +123,7 @@ nrow(distinct(brfss_smart2010, location_abbr))
 state_count = count(brfss_smart2010, location_abbr) %>% 
   arrange(n)
 ```
+
 
 ```{r}
 #to figure out the median of the “Excellent” response value in 2002
