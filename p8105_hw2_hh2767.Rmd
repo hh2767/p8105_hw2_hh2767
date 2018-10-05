@@ -55,6 +55,9 @@ station_serve_A = distinct(tidy_nyc_transit, line, station_name, .keep_all = TRU
 Then, we know that the number of distinct station that serve the A train is `r nrow(station_serve_A)`, and among those stations, `r sum(station_serve_A$ada)` are ADA compliant.
 
 #Problem 2
+
+In the following chunk, I will read the Mr. Trash Wheel sheet and then clean the data with the following steps: Omit columns containing notes; Clean the variable names; Omit rows that do not include dumpster-specific data; rounds the number of sports balls to the nearest integer and converts the result to an integer variable; 
+
 ```{r}
 wheel_trash = readxl::read_excel(".\\data\\HealthyHarborWaterWheelTotals2018-7-28.xlsx", range = "A2:N338") %>% 
   janitor::clean_names() %>% 
