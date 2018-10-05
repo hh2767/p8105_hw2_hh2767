@@ -74,7 +74,7 @@ wheel_trash_2016 = filter(wheel_trash, year == 2016)
 In the following part, I will work on precipitaion data for 2016-2018. For each of them, I will first omit rows without precipitaion data and add a variable year that shows which year the data is from. Then, I will combine the three datasets(2016, 2017, and 2018) and convert month to a character variable.
 
 ```{r}
-prcp_2017 = readxl::read_excel(".\\data\\HealthyHarborWaterWheelTotals2017-9-26.xlsx", sheet = "2017 Precipitation") %>% 
+prcp_2017 = readxl::read_excel(".\\data\\HealthyHarborWaterWheelTotals2018-7-28.xlsx", sheet = "2017 Precipitation") %>% 
   janitor::clean_names() %>% 
   filter(!is.na(precipitation_in)) %>% 
   filter(!is.na(x_1)) %>% 
