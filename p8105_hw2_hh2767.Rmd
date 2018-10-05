@@ -82,7 +82,7 @@ prcp_2017 = readxl::read_excel(".\\data\\HealthyHarborWaterWheelTotals2018-7-28.
 prcp_2017 = filter(prcp_2017, prcp_2017$precipitation_in != "Month")
 colnames(prcp_2017)[2] = "amount"
 
-prcp_2016 = readxl::read_excel(".\\data\\HealthyHarborWaterWheelTotals2017-9-26.xlsx", sheet = "2016 Precipitation") %>% 
+prcp_2016 = readxl::read_excel(".\\data\\HealthyHarborWaterWheelTotals2018-7-28.xlsx", sheet = "2016 Precipitation") %>% 
   janitor::clean_names() %>% 
   filter(!is.na(precipitation_in)) %>% 
   filter(!is.na(x_1)) %>% 
