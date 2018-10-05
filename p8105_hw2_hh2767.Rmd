@@ -56,7 +56,7 @@ Then, we know that the number of distinct station that serve the A train is `r n
 
 #Problem 2
 
-In the following chunk, I will read the Mr. Trash Wheel sheet and then clean the data with the following steps: Omit columns containing notes; Clean the variable names; Omit rows that do not include dumpster-specific data; rounds the number of sports balls to the nearest integer and converts the result to an integer variable; 
+In the following chunk, I will read the Mr.Trash Wheel sheet and then clean the data with the following steps: Omit columns containing notes; Clean the variable names; Omit rows that do not include dumpster-specific data; rounds the number of sports balls to the nearest integer and converts the result to an integer variable; 
 
 ```{r}
 wheel_trash = readxl::read_excel(".\\data\\HealthyHarborWaterWheelTotals2018-7-28.xlsx", range = "A2:N338") %>% 
@@ -80,7 +80,6 @@ prcp_2017 = readxl::read_excel(".\\data\\HealthyHarborWaterWheelTotals2017-9-26.
 prcp_2017 = filter(prcp_2017, prcp_2017$precipitation_in != "Month")
 colnames(prcp_2017)[2] = "amount"
 
-
 prcp_2016 = readxl::read_excel(".\\data\\HealthyHarborWaterWheelTotals2017-9-26.xlsx", sheet = "2016 Precipitation") %>% 
   janitor::clean_names() %>% 
   filter(!is.na(precipitation_in)) %>% 
@@ -102,10 +101,13 @@ prcp$precipitation_in = as.integer(prcp$precipitation_in)
 prcp_precipitation_in = tibble(prcp$precipitation_in)
 prcp$precipitation_in = apply(prcp_precipitation_in, 2, function(x) month.name[x])
 prcp$amount = as.numeric(prcp$amount)
-head(prcp, 5)
 
 prcp_2017$amount = as.numeric(prcp_2017$amount)
+
+head(prcp, 5)
 ```
+
+The "Mr.Trash Wheel" dataset contains data about trash that is collected from Jones Falls River at an intake into inner harbor in Baltimore. In this dataset, there are `r nrow(wheel_trash)` observations, and `r ncol(wheel_trash)` variables, which show when the trash is collected, what is the trash, and how much of trash is collected. For example, the "date" variable shows when the trash is collected, the "weight_tons" variable shows how much trash is collected, and variables like "plastic_bottles" and "cigarette_butts" show how much of each kind of trash is collected, so that we can focus on the kind of trash that we are interested in.
 
 #Problem 3
 
