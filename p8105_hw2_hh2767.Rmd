@@ -164,6 +164,7 @@ In order to figure out what the median of the “Excellent” response value is 
 #to figure out the median of the “Excellent” response value in 2002
 brfss_smart_only2002 = filter(brfss_smart2010, year == 2002)
 median_excellent_2002 = median(brfss_smart_only2002$excellent, na.omit(TRUE))
+
 ```
 
 Then, we know the median of the “Excellent” response value in 2002 is `r median_excellent_2002`.
