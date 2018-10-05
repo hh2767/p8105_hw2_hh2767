@@ -68,7 +68,6 @@ head(wheel_trash, 5)
 wheel_trash$sports_balls = round(wheel_trash$sports_balls)
 wheel_trash$sports_balls = as.integer(wheel_trash$sports_balls)
 
-wheel_trash_2016 = filter(wheel_trash, year == 2016)
 ```
 
 In the following part, I will work on precipitaion data for 2016-2018. For each of them, I will first omit rows without precipitaion data and add a variable year that shows which year the data is from. Then, I will combine the three datasets(2016, 2017, and 2018) and convert month to a character variable.
@@ -110,7 +109,7 @@ head(prcp, 5)
 ```
 
 The "Mr.Trash Wheel" dataset contains data about trash that is collected from Jones Falls River at an intake into inner harbor in Baltimore. In this dataset, there are `r nrow(wheel_trash)` observations, and `r ncol(wheel_trash)` variables, which show when the trash is collected, what is the trash, and how much of trash is collected. For example, the "date" variable shows when the trash is collected, the "weight_tons" variable shows how much trash is collected, and variables like "plastic_bottles" and "cigarette_butts" show how much of each kind of trash is collected, so that we can focus on the kind of trash that we are interested in.
-The precipitaion dataset(prcp) contains precipitation data in Baltimore, from 2016 to 2018. We need to analyze precipitation data because it is related to the amount of trash that we would expect to collect. In this dataset, there are `r nrow(prcp)` observations, and `r ncol(prcp)` variables. The "precipitation_in" variable and the "year" variable together indicate which month and which year the data is about, and the "amount" variable shows the amount of precipitation. For available data, the total precipitation in 2017 is `r sum(prcp_2017$amount)`. The median number of sports balls in a dumpster in 2016 is `r round(median(wheel_trash_2016$sports_balls))`.
+The precipitaion dataset(prcp) contains precipitation data in Baltimore, from 2016 to 2018. We need to analyze precipitation data because it is related to the amount of trash that we would expect to collect. In this dataset, there are `r nrow(prcp)` observations, and `r ncol(prcp)` variables. The "precipitation_in" variable and the "year" variable together indicate which month and which year the data is about, and the "amount" variable shows the amount of precipitation. For available data, the total precipitation in 2017 is `r sum(prcp_2017$amount)`. The median number of sports balls in a dumpster in 2016 is `r round(median(filter(wheel_trash, year == 2016)$sports_balls))`.
 
 #Problem 3
 
