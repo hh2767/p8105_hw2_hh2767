@@ -69,7 +69,7 @@ wheel_trash$sports_balls = round(wheel_trash$sports_balls)
 wheel_trash$sports_balls = as.integer(wheel_trash$sports_balls)
 ```
 
-
+In the following part, I will work on precipitaion data for 2016-2018. For each of them, I will first omit rows without precipitaion data and add a variable year that shows which year the data is from. Then, I will combine the three datasets(2016, 2017, and 2018) and convert month to a character variable.
 
 ```{r}
 prcp_2017 = readxl::read_excel(".\\data\\HealthyHarborWaterWheelTotals2017-9-26.xlsx", sheet = "2017 Precipitation") %>% 
@@ -79,7 +79,6 @@ prcp_2017 = readxl::read_excel(".\\data\\HealthyHarborWaterWheelTotals2017-9-26.
   mutate(year = 2017)
 prcp_2017 = filter(prcp_2017, prcp_2017$precipitation_in != "Month")
 colnames(prcp_2017)[2] = "amount"
-#prcp_2017$amount = as.numeric(prcp_2017$amount)
 
 
 prcp_2016 = readxl::read_excel(".\\data\\HealthyHarborWaterWheelTotals2017-9-26.xlsx", sheet = "2016 Precipitation") %>% 
@@ -103,6 +102,9 @@ prcp$precipitation_in = as.integer(prcp$precipitation_in)
 prcp_precipitation_in = tibble(prcp$precipitation_in)
 prcp$precipitation_in = apply(prcp_precipitation_in, 2, function(x) month.name[x])
 prcp$amount = as.numeric(prcp$amount)
+head(prcp, 5)
+
+prcp_2017$amount = as.numeric(prcp_2017$amount)
 ```
 
 #Problem 3
