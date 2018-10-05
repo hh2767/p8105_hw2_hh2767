@@ -72,32 +72,37 @@ wheel_trash$sports_balls = as.integer(wheel_trash$sports_balls)
 
 
 ```{r}
-pptn_2017 = readxl::read_excel(".\\data\\HealthyHarborWaterWheelTotals2017-9-26.xlsx", sheet = "2017 Precipitation") %>% 
+prcp_2017 = readxl::read_excel(".\\data\\HealthyHarborWaterWheelTotals2017-9-26.xlsx", sheet = "2017 Precipitation") %>% 
   janitor::clean_names() %>% 
   filter(!is.na(precipitation_in)) %>% 
   filter(!is.na(x_1)) %>% 
   mutate(year = 2017)
+prcp_2017 = filter(prcp_2017, prcp_2017$precipitation_in != "Month")
+colnames(prcp_2017)[2] = "amount"
+#prcp_2017$amount = as.numeric(prcp_2017$amount)
 
-pptn_2016 = readxl::read_excel(".\\data\\HealthyHarborWaterWheelTotals2017-9-26.xlsx", sheet = "2016 Precipitation") %>% 
+
+prcp_2016 = readxl::read_excel(".\\data\\HealthyHarborWaterWheelTotals2017-9-26.xlsx", sheet = "2016 Precipitation") %>% 
   janitor::clean_names() %>% 
   filter(!is.na(precipitation_in)) %>% 
   filter(!is.na(x_1)) %>% 
   mutate(year = 2016)
+colnames(prcp_2016)[2] = "amount"
 
-pptn_2018 = readxl::read_excel(".\\data\\HealthyHarborWaterWheelTotals2018-7-28.xlsx", sheet = "2018 Precipitation") %>% 
+prcp_2018 = readxl::read_excel(".\\data\\HealthyHarborWaterWheelTotals2018-7-28.xlsx", sheet = "2018 Precipitation") %>% 
   janitor::clean_names() %>% 
   filter(!is.na(precipitation_in)) %>% 
   filter(!is.na(x_1)) %>% 
   mutate(year = 2018)
+colnames(prcp_2018)[2] = "amount"
 
-pptn = bind_rows(pptn_2016, pptn_2017, pptn_2018)
+prcp = bind_rows(prcp_2016, prcp_2017, prcp_2018)
 
-pptn = filter(pptn, pptn$precipitation_in != "Month")
-pptn$precipitation_in = as.integer(pptn$precipitation_in)
-pptn_precipitation_in = tibble(pptn$precipitation_in)
-pptn$precipitation_in = apply(pptn_precipitation_in, 2, function(x) month.name[x])
-colnames(pptn)[2] = "amount"
-pptn$amount = as.numeric(pptn$amount)
+prcp = filter(prcp, prcp$precipitation_in != "Month")
+prcp$precipitation_in = as.integer(prcp$precipitation_in)
+prcp_precipitation_in = tibble(prcp$precipitation_in)
+prcp$precipitation_in = apply(prcp_precipitation_in, 2, function(x) month.name[x])
+prcp$amount = as.numeric(prcp$amount)
 ```
 
 #Problem 3
@@ -129,7 +134,6 @@ brfss_smart2010 = filter(brfss_smart2010, topic == "Overall Health") %>%
 # brfss_smart2010$very_good = lapply(brfss_smart2010$very_good, function(x) x/100)
 # brfss_smart2010$excellent = lapply(brfss_smart2010$excellent, function(x) x/100)
 # brfss_smart2010$above_good = lapply(brfss_smart2010$above_good, function(x) x/100)
-
 
 ```
 
