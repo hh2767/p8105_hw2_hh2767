@@ -14,6 +14,8 @@ library(p8105.datasets)
 
 #Problem 1
 
+This dataset contains variables that describe NYC transits. I will first read the dataset, and then clean the data.
+
 ```{r}
 nyc_transit = read_csv(file = ".\\data\\NYC_Transit_Subway_Entrance_And_Exit_Data.csv") %>% 
   janitor::clean_names() %>% 
@@ -22,7 +24,7 @@ mutate(entry = ifelse(entry == "NO", FALSE, TRUE))
 
 head(nyc_transit, 5)
 ```
-This dataset contains variables that describe NYC transits. The variables are:lines, station names, station locations, the routes that the station serves, entry type, vendings, ADA compliances and so on. So far, I have selected the variables that we need, cleaned the variable names, and turned entry variable from character variable into logical variable. The dimension of the data set is `r nrow(nyc_transit)`(rows)* `r ncol(nyc_transit)`(columns). These data are not tidy, because in the columns "route1" to "route11" are just differnet values of the same variable.
+ The variables are:lines, station names, station locations, the routes that the station serves, entry type, vendings, ADA compliances and so on. So far, I have selected the variables that we need, cleaned the variable names, and turned entry variable from character variable into logical variable. The dimension of the data set is `r nrow(nyc_transit)`(rows)* `r ncol(nyc_transit)`(columns). These data are not tidy, because in the columns "route1" to "route11" are just differnet values of the same variable.
 
 ```{r}
 
